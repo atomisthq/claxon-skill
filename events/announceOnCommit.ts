@@ -49,12 +49,11 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, AnnounceConfigu
 
     const msg = slackInfoMessage(
         `@${commit.author.login}`,
-        `Following skill configuration changes applied:
-${files.join("\n")}`
-        , ctx);
+        files.join("\n"),
+        ctx);
     msg.attachments[0].author_icon = gitCommit.author.avatar_url;
     msg.attachments[0].author_link = gitCommit.author.html_url;
-    msg.attachments[0].title = `Skill Update`;
+    // msg.attachments[0].title = `Skill Update`;
     msg.attachments[0].footer = `${msg.attachments[0].footer} \u00B7 ${ctx.workspaceId} \u00B7 ${url(gitCommit.html_url, codeLine(commit.sha.slice(0, 7)))}`;
 
     await ctx.message.send(msg, { channels: ctx.configuration[0].parameters.channels || [], users: ctx.configuration[0].parameters.channels || [] });
