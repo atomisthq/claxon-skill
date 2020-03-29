@@ -15,7 +15,7 @@
 #
 
 skill:
-  name: atomist/claxon-skill
+  name: atomisthq/claxon-skill
   title: Claxon
   version: 1.0.0
   author: Atomist
