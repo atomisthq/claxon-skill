@@ -1,0 +1,37 @@
+#
+#  Copyright © 2020 Atomist, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+
+skill:
+  name: atomist/claxon-skill
+  title: Claxon
+  version: 1.0.0
+  author: Atomist
+  description: |-
+    Atomist Skill announcing Skill configurations on our internal Slack channels
+  category:
+    - dev_ex
+  license: Apache-2.0
+  homepage: https://github.com/atomisthq/claxon-skill
+  repository: https://github.com/atomisthq/claxon-skill.git
+  icon: data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTguMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxwYXRoIGQ9Ik00OTYsMTYwaC01LjMzM2MtNi45MjQsMC0xMy42NjEsMi4yNDUtMTkuMiw2LjM5OWwtNDAuNTU4LDMwLjQxOGMtOS43MzcsNy4zMDQtMjEuMzU1LDExLjY3OC0zMy40OTEsMTIuNjExTDIwOCwyMjQKCQl2LTMuNjkzVjIwOGgtMTIuMzA3Yy05LjgzNy0wLjAwMS0xOC45MzgtNC42NzktMjUuMTIzLTEyLjMyOGMtMjAuNTI2LTI1LjM4My01My42NzUtNDAuMTE3LTg5Ljk2LTM0LjQ3MgoJCWMtNDEuNzE2LDYuNDkxLTc1LjAxMSw0MS4yNTktNzkuOTI4LDgzLjE4OUMtNi4xNDQsMzAyLjYsMzkuMTU5LDM1Miw5NiwzNTJjMzAuMjk5LDAsNTcuMjY1LTE0LjA3NCw3NC44NDItMzYuMDEKCQljNi4wNTEtNy41NTEsMTUuMTM2LTExLjk5LDI0LjgxMi0xMS45OWgwLjAyNkgyMDh2LTEyLjMyVjI4OGwxODkuNDE4LDE0LjU3YzEyLjEzNiwwLjkzNCwyMy43NTQsNS4zMDksMzMuNDkxLDEyLjYxMQoJCWw0MC41NTgsMzAuNDE4YzUuNTM5LDQuMTU0LDEyLjI3Niw2LjQsMTkuMiw2LjRINDk2YzguODM3LDAsMTYtNy4xNjQsMTYtMTZWMTc2QzUxMiwxNjcuMTYzLDUwNC44MzcsMTYwLDQ5NiwxNjB6Ii8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==
+
+  package:
+    use: atomist/package-npm-skill
+
+  runtime:
+    memory: 1024
+    name: nodejs10
+    entry_point: entryPoint

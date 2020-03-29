@@ -1,0 +1,19 @@
+subscription announceOnCommit {
+    Commit {
+        url
+        sha
+        message
+        author {
+            login
+        }
+        repo {
+            owner
+            name
+            org {
+                provider {
+                    apiUrl
+                }
+            }
+        }
+    }
+}
