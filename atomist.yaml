@@ -35,3 +35,10 @@ skill:
     memory: 1024
     name: nodejs10
     entry_point: entryPoint
+
+parameters:
+  - repo_filter:
+      name: repos
+      display_name: Which repositories
+      description: ''
+      required: false
