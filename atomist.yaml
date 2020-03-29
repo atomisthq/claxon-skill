@@ -43,7 +43,7 @@ parameters:
       description: Channel names to send Skill configuration changes to
       required: false
   - string_array:
-      name: userse
+      name: users
       display_name: Users
       description: User names to send Skill configuration changes to
       required: false      
