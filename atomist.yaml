@@ -37,6 +37,16 @@ skill:
     entry_point: entryPoint
 
 parameters:
+  - string_array:
+      name: channels
+      display_name: Channels
+      description: Channel names to send Skill configuration changes to
+      required: false
+  - string_array:
+      name: userse
+      display_name: Users
+      description: User names to send Skill configuration changes to
+      required: false      
   - repo_filter:
       name: repos
       display_name: Which repositories

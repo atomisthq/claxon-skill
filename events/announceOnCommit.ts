@@ -24,7 +24,12 @@ import {
 import { gitHub } from "./github";
 import { AnnounceOnCommitSubscription } from "./types";
 
-export const handler: EventHandler<AnnounceOnCommitSubscription> = async ctx => {
+interface AnnounceConfiguration {
+    channels: string[];
+    users: string[];
+}
+
+export const handler: EventHandler<AnnounceOnCommitSubscription, AnnounceConfiguration> = async ctx => {
     const commit = ctx.data.Commit[0];
     const repo = commit.repo;
 
@@ -40,7 +45,7 @@ export const handler: EventHandler<AnnounceOnCommitSubscription> = async ctx => 
         ref: commit.sha,
     })).data;
 
-    const files = gitCommit.files.map(f => ` * ${f.status} _${f.filename}_`);
+    const files = gitCommit.files.map(f => ` \u00B7 ${f.status} _${f.filename}_`);
 
     const msg = slackInfoMessage(
         `@${commit.author.login}`,
@@ -52,5 +57,10 @@ ${files.join("\n")}`
     msg.attachments[0].title = `Skill Update`;
     msg.attachments[0].footer = `${msg.attachments[0].footer} \u00B7 ${ctx.workspaceId} \u00B7 ${url(gitCommit.html_url, codeLine(commit.sha.slice(0, 7)))}`;
 
-    await ctx.message.send(msg, { channels: [], users: "cd" });
+    await ctx.message.send(msg, { channels: ctx.configuration[0].parameters.channels || [], users: ctx.configuration[0].parameters.channels || [] });
+
+    return {
+        code: 0,
+        reason: `Send Skill configuration update`,
+    };
 };
