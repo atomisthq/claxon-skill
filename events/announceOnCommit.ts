@@ -21,6 +21,7 @@ import {
     codeLine,
     url,
 } from "@atomist/slack-messages";
+import * as _ from "lodash";
 import { gitHub } from "./github";
 import { AnnounceOnCommitSubscription } from "./types";
 
@@ -39,17 +40,22 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, AnnounceConfigu
         apiUrl: repo.org.provider.apiUrl,
     }));
 
+    let commitMsg = commit.message.split("\n")[0];
+    const generated = commit.message.includes("[atomist:generated]");
+
     const gitCommit = (await gitHub(credential.token, repo.org.provider.apiUrl).repos.getCommit({
         owner: repo.owner,
         repo: repo.name,
         ref: commit.sha,
     })).data;
 
-    const files = gitCommit.files.map(f => ` \u00B7 ${f.status} _${f.filename}_`);
+    if (!generated) {
+        commitMsg = gitCommit.files.map(f => `_${_.upperFirst(f.status)} ${f.filename}_`).join("\n");
+    }
 
     const msg = slackInfoMessage(
         `@${commit.author.login}`,
-        files.join("\n"),
+        commitMsg,
         ctx);
     msg.attachments[0].author_icon = gitCommit.author.avatar_url;
     msg.attachments[0].author_link = gitCommit.author.html_url;
