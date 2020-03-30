@@ -40,7 +40,7 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, AnnounceConfigu
         apiUrl: repo.org.provider.apiUrl,
     }));
 
-    let commitMsg = commit.message.split("\n")[0];
+    let commitMsg = `_${commit.message.split("\n")[0]}_`;
     const generated = commit.message.includes("[atomist:generated]");
 
     const gitCommit = (await gitHub(credential.token, repo.org.provider.apiUrl).repos.getCommit({
