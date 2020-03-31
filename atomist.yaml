@@ -46,7 +46,12 @@ parameters:
       name: users
       display_name: Users
       description: User names to send Skill configuration changes to
-      required: false      
+      required: false
+  - string_array:
+      name: workspaces
+      display_name: Workspaces to Ignore
+      description: Ids for workspaces to ignore
+      required: false
   - repo_filter:
       name: repos
       display_name: Which repositories

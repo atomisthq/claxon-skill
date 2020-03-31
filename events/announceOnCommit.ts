@@ -28,11 +28,21 @@ import { AnnounceOnCommitSubscription } from "./types";
 interface AnnounceConfiguration {
     channels: string[];
     users: string[];
+    workspaces: string[];
 }
 
 export const handler: EventHandler<AnnounceOnCommitSubscription, AnnounceConfiguration> = async ctx => {
     const commit = ctx.data.Commit[0];
     const repo = commit.repo;
+    const workspaceId = repo.name.split("-")[0];
+
+    if ((ctx.configuration[0]?.parameters?.workspaces || []).includes(workspaceId)) {
+        return {
+            code: 0,
+            reason: `Workspace ${workspaceId} ignored`,
+            visibility: "hidden",
+        };
+    }
 
     const credential = await ctx.credential.resolve(gitHubAppToken({
         owner: repo.owner,
@@ -57,10 +67,10 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, AnnounceConfigu
         `@${commit.author.login}`,
         commitMsg,
         ctx);
-    msg.attachments[0].author_icon = gitCommit.author.avatar_url;
-    msg.attachments[0].author_link = gitCommit.author.html_url;
+    msg.attachments[0].author_icon = gitCommit?.author?.avatar_url;
+    msg.attachments[0].author_link = gitCommit?.author?.html_url;
     msg.attachments[0].footer =
-        `${msg.attachments[0].footer} \u00B7 ${repo.name.split("-")[0]} \u00B7 ${url(gitCommit.html_url, codeLine(commit.sha.slice(0, 7)))}`;
+        `${msg.attachments[0].footer} \u00B7 ${workspaceId} \u00B7 ${url(gitCommit?.html_url, codeLine(commit.sha.slice(0, 7)))}`;
 
     await ctx.message.send(
         msg,
