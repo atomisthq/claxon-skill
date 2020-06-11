@@ -16,22 +16,17 @@
 
 import { EventHandler } from "@atomist/skill/lib/handler";
 import { slackInfoMessage } from "@atomist/skill/lib/messages";
+import { gitHubComRepository } from "@atomist/skill/lib/project";
+import { gitHub } from "@atomist/skill/lib/project/github";
 import { gitHubAppToken } from "@atomist/skill/lib/secrets";
 import {
     codeLine,
     url,
 } from "@atomist/slack-messages";
 import * as _ from "lodash";
-import { gitHub } from "./github";
-import { AnnounceOnCommitSubscription } from "./types";
+import { AnnounceOnCommitSubscription } from "../typings/types";
 
-interface AnnounceConfiguration {
-    channels: string[];
-    users: string[];
-    workspaces: string[];
-}
-
-export const handler: EventHandler<AnnounceOnCommitSubscription, AnnounceConfiguration> = async ctx => {
+export const handler: EventHandler<AnnounceOnCommitSubscription, ClaxonConfiguration> = async ctx => {
     const commit = ctx.data.Commit[0];
     const repo = commit.repo;
     const workspaceId = repo.name.split("-")[0];
@@ -53,7 +48,7 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, AnnounceConfigu
     let commitMsg = `_${commit.message.split("\n")[0]}_`;
     const generated = commit.message.includes("[atomist:generated]");
 
-    const gitCommit = (await gitHub(credential.token, repo.org.provider.apiUrl).repos.getCommit({
+    const gitCommit = (await gitHub(gitHubComRepository({ owner: repo.owner, repo: repo.name, credential })).repos.getCommit({
         owner: repo.owner,
         repo: repo.name,
         ref: commit.sha,
