@@ -1,5 +1,5 @@
 # `atomisthq/claxon-skill`
-
+ 
 <!---atomist-skill-description:start--->
 Atomist Skill announcing Skill configurations on our internal Slack channels
 <!---atomist-skill-description:end--->
