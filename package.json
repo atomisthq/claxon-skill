@@ -26,7 +26,7 @@
     "@graphql-codegen/cli": "^1.17.10",
     "@graphql-codegen/typescript": "^1.17.10",
     "@graphql-codegen/typescript-operations": "^1.17.8",
-    "@types/lodash": "^4.14.161",
+    "@types/lodash": "^4.14.162",
     "@types/mocha": "^7.0.2",
     "@types/power-assert": "^1.5.3",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
