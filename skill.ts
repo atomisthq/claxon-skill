@@ -15,12 +15,16 @@
  */
 
 import {
+    Category,
     ParameterType,
-    repoFilter,
+    parameter,
     skill,
-} from "@atomist/skill/lib/skill";
+} from "@atomist/skill";
+import { ClaxonConfiguration } from "./lib/configuration";
 
 export const Skill = skill<ClaxonConfiguration & { repos: any }>({
+
+    categories: [Category.DevOps],
 
     runtime: {
         memory: 1024,
@@ -46,10 +50,6 @@ export const Skill = skill<ClaxonConfiguration & { repos: any }>({
             description: "Ids of workspaces to ignore",
             required: false,
         },
-        repos: repoFilter({ required: false }),
+        repos: parameter.repoFilter({ required: false }),
     },
-
-    subscriptions: [
-        "file://graphql/subscription/*.graphql",
-    ]
 });

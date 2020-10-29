@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-interface ClaxonConfiguration {
+export interface ClaxonConfiguration {
     channels: string[];
     users: string[];
     workspaces: string[];

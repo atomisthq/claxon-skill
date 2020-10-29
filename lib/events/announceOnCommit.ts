@@ -14,32 +14,25 @@
  * limitations under the License.
  */
 
-import { EventHandler } from "@atomist/skill/lib/handler";
-import { slackInfoMessage } from "@atomist/skill/lib/messages";
-import { gitHubComRepository } from "@atomist/skill/lib/project";
-import { gitHub } from "@atomist/skill/lib/project/github";
-import { gitHubAppToken } from "@atomist/skill/lib/secrets";
-import {
-    codeLine,
-    url,
-} from "@atomist/slack-messages";
+import { EventHandler, slack, repository, github, secret, status } from "@atomist/skill";
 import * as _ from "lodash";
 import { AnnounceOnCommitSubscription } from "../typings/types";
+import { ClaxonConfiguration } from "../configuration";
 
 export const handler: EventHandler<AnnounceOnCommitSubscription, ClaxonConfiguration> = async ctx => {
     const commit = ctx.data.Commit[0];
     const repo = commit.repo;
     const workspaceId = repo.name.split("-")[0];
 
-    if ((ctx.configuration[0]?.parameters?.workspaces || []).includes(workspaceId)) {
-        return {
-            code: 0,
-            reason: `Workspace ${workspaceId} ignored`,
-            visibility: "hidden",
-        };
+    if ((ctx.configuration?.parameters?.workspaces || []).includes(workspaceId)) {
+        return status.success(`Ignore workspace ${workspaceId}`).hidden();
     }
 
-    const credential = await ctx.credential.resolve(gitHubAppToken({
+    if ((ctx.configuration?.parameters?.workspaces || []).length > 0 && commit.author.login === "atomist-bot") {
+        return status.success("Ignore atomist-bot activity").hidden();
+    }
+
+    const credential = await ctx.credential.resolve(secret.gitHubAppToken({
         owner: repo.owner,
         repo: repo.name,
         apiUrl: repo.org.provider.apiUrl,
@@ -48,7 +41,7 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, ClaxonConfigura
     let commitMsg = `_${commit.message.split("\n")[0]}_`;
     const generated = commit.message.includes("[atomist:generated]");
 
-    const gitCommit = (await gitHub(gitHubComRepository({ owner: repo.owner, repo: repo.name, credential })).repos.getCommit({
+    const gitCommit = (await github.api(repository.gitHub({ owner: repo.owner, repo: repo.name, credential })).repos.getCommit({
         owner: repo.owner,
         repo: repo.name,
         ref: commit.sha,
@@ -58,14 +51,14 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, ClaxonConfigura
         commitMsg = gitCommit.files.map(f => `_${_.upperFirst(f.status)} ${f.filename}_`).join("\n");
     }
 
-    const msg = slackInfoMessage(
+    const msg = slack.infoMessage(
         `@${commit.author.login}`,
         commitMsg,
         ctx);
     msg.attachments[0].author_icon = gitCommit?.author?.avatar_url;
     msg.attachments[0].author_link = gitCommit?.author?.html_url;
     msg.attachments[0].footer =
-        `${msg.attachments[0].footer} \u00B7 ${workspaceId} \u00B7 ${url(gitCommit?.html_url, codeLine(commit.sha.slice(0, 7)))}`;
+        `${msg.attachments[0].footer} \u00B7 ${workspaceId} \u00B7 ${slack.url(gitCommit?.html_url, slack.codeLine(commit.sha.slice(0, 7)))}`;
 
     await ctx.message.send(
         msg,
@@ -74,8 +67,5 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, ClaxonConfigura
             users: ctx.configuration[0]?.parameters?.users || [],
         });
 
-    return {
-        code: 0,
-        reason: `Send Skill configuration update`,
-    };
+    return status.success(`Send Skill configuration update`);
 };

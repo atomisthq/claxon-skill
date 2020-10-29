@@ -4,21 +4,15 @@
   "author": {
     "name": "Atomist"
   },
-  "keywords": [
-    "DEVEX"
-  ],
   "license": "Apache-2.0",
   "homepage": "https://github.com/atomisthq/claxon-skill",
   "repository": {
     "type": "git",
     "url": "https://github.com/atomisthq/claxon-skill.git"
   },
-  "icon": "file://docs/images/icon.svg",
   "main": "node_modules/@atomist/skill/lib/function.js",
   "dependencies": {
-    "@atomist/skill": "^0.2.3",
-    "@atomist/slack-messages": "^1.2.0",
-    "@types/fs-extra": "^8.0.1",
+    "@atomist/skill": "^0.4.1",
     "lodash": "^4.17.20"
   },
   "devDependencies": {
@@ -69,7 +63,7 @@
     "skill": "run-s compile test skill:generate skill:bundle skill:package",
     "skill:generate": "atm-skill generate",
     "skill:clean": "atm-skill clean",
-    "skill:bundle": "atm-skill bundle --minify --source-map",
+    "skill:bundle": "atm-skill bundle --no-minify --no-source-map",
     "skill:package": "atm-skill package",
     "skill:register": "atm-skill register"
   }
