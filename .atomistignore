@@ -2,11 +2,8 @@
 .atomistignore
 .eslint*
 *.md
+.skill/
 tsconfig.json
-codegen.yml
 test/
-lib/
 legal/
 docs/
-skill/
-/index.*
