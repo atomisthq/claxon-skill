@@ -1,7 +1,0 @@
-schema: node_modules/@atomist/skill/graphql/schema.json
-documents: graphql/subscription/*.graphql
-generates:
-  ./lib/typings/types.ts:
-    plugins:
-      - typescript
-      - typescript-operations

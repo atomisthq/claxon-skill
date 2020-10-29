@@ -52,4 +52,6 @@ export const Skill = skill<ClaxonConfiguration & { repos: any }>({
         },
         repos: parameter.repoFilter({ required: false }),
     },
+
+    subscriptions: ["@atomist/skill/github/onPush"],
 });

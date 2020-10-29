@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import { EventHandler, slack, repository, github, secret, status } from "@atomist/skill";
+import { subscription, EventHandler, slack, repository, github, secret, status } from "@atomist/skill";
 import * as _ from "lodash";
-import { AnnounceOnCommitSubscription } from "../typings/types";
-import { ClaxonConfiguration } from "../configuration";
+import { ClaxonConfiguration } from "./configuration";
 
-export const handler: EventHandler<AnnounceOnCommitSubscription, ClaxonConfiguration> = async ctx => {
-    const commit = ctx.data.Commit[0];
-    const repo = commit.repo;
+export const onPush: EventHandler<subscription.types.OnPushSubscription, ClaxonConfiguration> = async ctx => {
+    const commit = ctx.data.Push[0].after;
+    const repo = ctx.data.Push[0].repo;
     const workspaceId = repo.name.split("-")[0];
 
     if ((ctx.configuration?.parameters?.workspaces || []).includes(workspaceId)) {
@@ -63,8 +62,8 @@ export const handler: EventHandler<AnnounceOnCommitSubscription, ClaxonConfigura
     await ctx.message.send(
         msg,
         {
-            channels: ctx.configuration[0]?.parameters?.channels || [],
-            users: ctx.configuration[0]?.parameters?.users || [],
+            channels: ctx.configuration?.parameters?.channels || [],
+            users: ctx.configuration?.parameters?.users || [],
         });
 
     return status.success(`Send Skill configuration update`);
