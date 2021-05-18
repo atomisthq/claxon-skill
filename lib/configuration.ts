@@ -15,7 +15,8 @@
  */
 
 export interface ClaxonConfiguration {
-    channels: string[];
-    users: string[];
-    workspaces: string[];
+	channels: string[];
+	users: string[];
+	internalUsers: boolean;
+	workspaces: string[];
 }

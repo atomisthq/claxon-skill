@@ -14,44 +14,46 @@
  * limitations under the License.
  */
 
-import {
-    Category,
-    ParameterType,
-    parameter,
-    skill,
-} from "@atomist/skill";
+import { Category, parameter, ParameterType, skill } from "@atomist/skill";
+
 import { ClaxonConfiguration } from "./lib/configuration";
 
 export const Skill = skill<ClaxonConfiguration & { repos: any }>({
+	categories: [Category.DevOps],
 
-    categories: [Category.DevOps],
+	runtime: {
+		memory: 1024,
+		timeout: 60,
+	},
 
-    runtime: {
-        memory: 1024,
-        timeout: 60,
-    },
+	parameters: {
+		channels: {
+			type: ParameterType.StringArray,
+			displayName: "Channels",
+			description: "Channel names to send Skill configuration changes to",
+			required: false,
+		},
+		users: {
+			type: ParameterType.StringArray,
+			displayName: "Users",
+			description: "User names to send Skill configuration changes to",
+			required: false,
+		},
+		internalUsers: {
+			type: ParameterType.Boolean,
+			displayName: "Suppress internal users",
+			description: "Hide activity by internal users",
+			required: false,
+			defaultValue: true,
+		},
+		workspaces: {
+			type: ParameterType.StringArray,
+			displayName: "Workspaces to ignore",
+			description: "Ids of workspaces to ignore",
+			required: false,
+		},
+		repos: parameter.repoFilter({ required: false }),
+	},
 
-    parameters: {
-        channels: {
-            type: ParameterType.StringArray,
-            displayName: "Channels",
-            description: "Channel names to send Skill configuration changes to",
-            required: false,
-        },
-        users: {
-            type: ParameterType.StringArray,
-            displayName: "Users",
-            description: "User names to send Skill configuration changes to",
-            required: false,
-        },
-        workspaces: {
-            type: ParameterType.StringArray,
-            displayName: "Workspaces to ignore",
-            description: "Ids of workspaces to ignore",
-            required: false,
-        },
-        repos: parameter.repoFilter({ required: false }),
-    },
-
-    subscriptions: ["@atomist/skill/github/onPush"],
+	subscriptions: ["@atomist/skill/github/onPush"],
 });

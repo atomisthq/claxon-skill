@@ -1,0 +1,118 @@
+[
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "atomist-bot"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "atomistuxtest"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "bobtomist"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "roles": ["atomist-administrator"],
+    "sub": "cdupuis"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "dansmithy"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "fauxryan"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "jrday"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "johnsonr"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "kipz"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "marketingmichelle"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "murban74"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "neilprosser"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "slenderslack"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "slimslenderslacks"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "whostolebenfrog"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "whostolebenfrog2"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
+    "sub": "whostolebenfrog3"
+  },
+  {
+    "name": "ben",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "sub": "110920614901369888097"
+  },
+  {
+    "name": "cd",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "roles": ["atomist-administrator"],
+    "sub": "110564219611224025327"
+  },
+  {
+    "name": "danny",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "sub": "106492103145798354519"
+  },
+  {
+    "name": "ding-dong - jim",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "sub": "111582577276624207215"
+  },
+  {
+    "name": "james",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "sub": "112551996047080582046"
+  },
+  {
+    "name": "jim",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "sub": "107586806811823884897"
+  },
+  {
+    "name": "michelle",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "roles": ["atomist-operator"],
+    "sub": "102110638529817700088"
+  },
+  {
+    "name": "neil",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "sub": "106624631677543548981"
+  },
+  {
+    "name": "ryan",
+    "pid": "ec88c577-3f2f-41a2-9b5d-777d4f593c1a",
+    "sub": "117612247659478737484"
+  }
+]

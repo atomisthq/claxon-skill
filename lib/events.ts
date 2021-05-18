@@ -14,57 +14,100 @@
  * limitations under the License.
  */
 
-import { subscription, EventHandler, slack, repository, github, secret, status } from "@atomist/skill";
+import {
+	EventHandler,
+	github,
+	repository,
+	secret,
+	slack,
+	status,
+	subscription,
+} from "@atomist/skill";
 import * as _ from "lodash";
+
 import { ClaxonConfiguration } from "./configuration";
 
-export const onPush: EventHandler<subscription.types.OnPushSubscription, ClaxonConfiguration> = async ctx => {
-    const commit = ctx.data.Push[0].after;
-    const repo = ctx.data.Push[0].repo;
-    const workspaceId = repo.name.split("-")[0];
+const Users: Array<{
+	name: string;
+	pid: string;
+	sub: string;
+}> = require("../users.json"); // eslint-disable-line @typescript-eslint/no-var-requires
 
-    if ((ctx.configuration?.parameters?.workspaces || []).includes(workspaceId)) {
-        return status.success(`Ignore workspace ${workspaceId}`).hidden();
-    }
+export const onPush: EventHandler<
+	subscription.types.OnPushSubscription,
+	ClaxonConfiguration
+> = async ctx => {
+	const commit = ctx.data.Push[0].after;
+	const repo = ctx.data.Push[0].repo;
+	const workspaceId = repo.name.split("-")[0];
 
-    if ((ctx.configuration?.parameters?.workspaces || []).length > 0 && commit.author.login === "atomist-bot") {
-        return status.success("Ignore atomist-bot activity").hidden();
-    }
+	if (
+		(ctx.configuration?.parameters?.workspaces || []).includes(workspaceId)
+	) {
+		return status.success(`Ignore workspace ${workspaceId}`).hidden();
+	}
 
-    const credential = await ctx.credential.resolve(secret.gitHubAppToken({
-        owner: repo.owner,
-        repo: repo.name,
-        apiUrl: repo.org.provider.apiUrl,
-    }));
+	if (
+		(ctx.configuration?.parameters?.workspaces || []).length > 0 &&
+		commit.author.login === "atomist-bot"
+	) {
+		return status.success("Ignore atomist-bot activity").hidden();
+	}
 
-    let commitMsg = `_${commit.message.split("\n")[0]}_`;
-    const generated = commit.message.includes("[atomist:generated]");
+	if (
+		ctx.configuration?.parameters.internalUsers &&
+		Users.some(u => u.sub === commit.author.login)
+	) {
+		return status.success("Ignore internal user activity").hidden();
+	}
 
-    const gitCommit = (await github.api(repository.gitHub({ owner: repo.owner, repo: repo.name, credential })).repos.getCommit({
-        owner: repo.owner,
-        repo: repo.name,
-        ref: commit.sha,
-    })).data;
+	const credential = await ctx.credential.resolve(
+		secret.gitHubAppToken({
+			owner: repo.owner,
+			repo: repo.name,
+			apiUrl: repo.org.provider.apiUrl,
+		}),
+	);
 
-    if (!generated) {
-        commitMsg = gitCommit.files.map(f => `_${_.upperFirst(f.status)} ${f.filename}_`).join("\n");
-    }
+	let commitMsg = `_${commit.message.split("\n")[0]}_`;
+	const generated = commit.message.includes("[atomist:generated]");
 
-    const msg = slack.infoMessage(
-        `@${commit.author.login}`,
-        commitMsg,
-        ctx);
-    msg.attachments[0].author_icon = gitCommit?.author?.avatar_url;
-    msg.attachments[0].author_link = gitCommit?.author?.html_url;
-    msg.attachments[0].footer =
-        `${msg.attachments[0].footer} \u00B7 ${workspaceId} \u00B7 ${slack.url(gitCommit?.html_url, slack.codeLine(commit.sha.slice(0, 7)))}`;
+	const gitCommit = (
+		await github
+			.api(
+				repository.gitHub({
+					owner: repo.owner,
+					repo: repo.name,
+					credential,
+				}),
+			)
+			.repos.getCommit({
+				owner: repo.owner,
+				repo: repo.name,
+				ref: commit.sha,
+			})
+	).data;
 
-    await ctx.message.send(
-        msg,
-        {
-            channels: ctx.configuration?.parameters?.channels || [],
-            users: ctx.configuration?.parameters?.users || [],
-        });
+	if (!generated) {
+		commitMsg = gitCommit.files
+			.map(f => `_${_.upperFirst(f.status)} ${f.filename}_`)
+			.join("\n");
+	}
 
-    return status.success(`Send Skill configuration update`);
+	const msg = slack.infoMessage(`@${commit.author.login}`, commitMsg, ctx);
+	msg.attachments[0].author_icon = gitCommit?.author?.avatar_url;
+	msg.attachments[0].author_link = gitCommit?.author?.html_url;
+	msg.attachments[0].footer = `${
+		msg.attachments[0].footer
+	} \u00B7 ${workspaceId} \u00B7 ${slack.url(
+		gitCommit?.html_url,
+		slack.codeLine(commit.sha.slice(0, 7)),
+	)}`;
+
+	await ctx.message.send(msg, {
+		channels: ctx.configuration?.parameters?.channels || [],
+		users: ctx.configuration?.parameters?.users || [],
+	});
+
+	return status.success(`Send Skill configuration update`);
 };
