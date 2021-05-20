@@ -13,6 +13,10 @@
   },
   {
     "pid": "zjlmxjzwhurspem",
+    "sub": "cdupuis-test"
+  },
+  {
+    "pid": "zjlmxjzwhurspem",
     "roles": ["atomist-administrator"],
     "sub": "cdupuis"
   },
